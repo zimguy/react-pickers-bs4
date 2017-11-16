@@ -23,4 +23,4 @@ npm start
 ## DatePicker
 Date picker with calendar popup.
 
-![DatePicker](https://raw.githubusercontent.com/zimguy/react-pickers-bs4/master/resources/DatePicker.png)
+![DatePicker](https://raw.githubusercontent.com/zimguy/react-pickers-bs4/master/resources/DatePicker.PNG)
