@@ -1,6 +1,6 @@
 {
   "name": "react-pickers-bs4",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "React Bootstrap4 Pickers",
   "main": "build/index.js",
   "scripts": {
@@ -65,11 +65,11 @@
     "whatwg-fetch": "2.0.3"
   },
   "peerDependencies": {
-    "react": ">=0.14",
-    "react-dom": ">=0.14",
-    "bootstrap": "^4.0.0-beta.2",
-    "font-awesome": "^4.7.0",
-    "moment": "^2.19.2"
+    "react": ">=15.6.1",
+    "react-dom": ">=15.6.1",
+    "bootstrap": ">=4.0.0-beta.2",
+    "font-awesome": ">=4.7.0",
+    "moment": ">=2.19.0"
   },
   "jest": {
     "collectCoverageFrom": [

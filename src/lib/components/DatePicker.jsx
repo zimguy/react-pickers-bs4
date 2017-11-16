@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 
 import moment from 'moment';
 
-import 'font-awesome/css/font-awesome.min.css'
-
 import Calendar from './Calendar';
 import './Picker.css';
 

@@ -3,6 +3,7 @@ import moment from 'moment';
 import DatePicker from '../lib';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
 
 class App extends Component {
   constructor(props) {
