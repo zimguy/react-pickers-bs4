@@ -5,14 +5,13 @@ import moment from 'moment';
 import 'font-awesome/css/font-awesome.min.css'
 
 import Calendar from './Calendar';
-import './DateTimePicker.css';
+import './Picker.css';
 
 class DatePicker extends Component {
 
   constructor(props) {
     super(props);
-    this.state = this.getStateValuesFromProps(props);
-    this.state.isOpen = false;
+    this.state = Object.assign(this.getStateValuesFromProps(props), {isOpen: false});
   }
 
   getStateValuesFromProps = (props) => {
@@ -29,7 +28,7 @@ class DatePicker extends Component {
     const mom = moment(value, returnFormat);
     const displayValue = value && mom.isValid()
       ? mom.format(displayFormat)
-      : value;
+      : value ? value : '';
 
     return {displayFormat, returnFormat, value, displayValue, mom};
 

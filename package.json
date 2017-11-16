@@ -1,6 +1,6 @@
 {
   "name": "react-pickers-bs4",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "React NPM library starter kit based on Facebook's create react app",
   "main": "build/index.js",
   "scripts": {
@@ -108,5 +108,10 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "dependencies": {
+    "bootstrap": "^4.0.0-beta.2",
+    "font-awesome": "^4.7.0",
+    "moment": "^2.19.2"
   }
 }

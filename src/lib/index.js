@@ -1,8 +1,7 @@
-import Example from './components/Example';
-import SecondExample from './components/SecondExample';
+import DatePicker from './components/DatePicker';
 
-export default Example;
+export default DatePicker;
 export {
-  SecondExample
+  DatePicker
 };
 
