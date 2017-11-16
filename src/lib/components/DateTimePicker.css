@@ -1,0 +1,38 @@
+.Picker {
+  position: relative;
+}
+
+.Picker .Overlay {
+  position: absolute;
+  z-index: 999;
+  opacity: 1;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.Picker .Icon {
+  position: absolute;
+  right: 9px;
+  top: 10px;
+}
+
+.Picker .Icon.sm {
+  font-size: .875rem;
+  top: 8px;
+}
+
+.Picker .Icon.lg {
+  font-size: 1.25rem;
+  top: 14px;
+}
+
+.Picker .DowHeadings td {
+  text-align: center;
+}
+
+.Picker .Calendar tbody button {
+  width: 36px;
+}
+
+.Picker .border-standard {
+  border-color: #ced4da
+}
