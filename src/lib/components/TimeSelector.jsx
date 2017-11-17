@@ -7,7 +7,7 @@ const padZero = (num) => {
 
 const HourSelector = (props) => {
   const arraySize = props.pickerFormat === '12' ? 13 : 24;
-  const value = props.pickerFormat === '12' ? props.value % 12 : props.value;
+  const value = props.pickerFormat === '12' && props.value>12 ? props.value % 12 : props.value;
   return (
     <select
       className="btn btn-outline-dark border-standard"
@@ -56,8 +56,11 @@ class TimeSelector extends Component {
 
   handleHourChange = (event) => {
     let hh = parseInt(event.target.value, 10);
-    if (this.props.pickerFormat==='12' && this.getAmPm() === 'PM')
-      hh += 12;
+    if (this.props.pickerFormat==='12') {
+      const ap = this.getAmPm();
+      if (ap === 'PM' && hh > 0)
+        hh += 12;
+    };      
     this.props.onChange(hh, this.props.mm);
   }
 

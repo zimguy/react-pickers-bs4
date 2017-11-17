@@ -92,3 +92,68 @@ DatePicker will toggle the popup calendar when the user clicks on the input elem
 The calendar can also be toggled by pressing the ``Esc`` key.
 
 Tabbing (or back-tabbing) out of the input element will automatically close the Calendar.
+
+## TimePicker
+A wrapper around a text input element that allows the user to type in a time and/or select a time from a simple pop-up.
+
+![TimePicker](https://raw.githubusercontent.com/zimguy/react-pickers-bs4/master/resources/TimePicker.PNG)
+
+### TimePicker Properties
+````jsx
+<DatePicker
+  pickerFormat="12"
+  displayFormat="h:mm A"
+  returnFormat="HH:mm"
+  value={time}
+  onChange={this.handleTimeChange}
+  placeholder="HH:MM AM/PM"
+  error={timeError}
+  inputSize="lg"
+  />
+````
+#### pickerFormat
+One of ``"12"`` or ``"24"``. In 12-hour mode TimePicker will allow user to select AM or PM. Defaults to ``"12"``.
+
+#### displayFormat
+Format of the time displayed to the user. Defaults to "H:mm A" for 12-hour picker and "HH:mm" for 24-hour picker.
+
+#### returnFormat
+Format of the time returned by TimePicker. Defaults to "HH:mm".
+
+#### value
+Value of the time. TimePicker uses Moment to parse the time so it is very flexible in terms of the type and format of the value. However, the value returned by TimePicker will either be ``null`` or a string (if the value returned is valid then the string will be in *returnFormat*).
+
+#### onChange
+Handler invoked when the user enters or selects a time. The handler must accept a javascript object of the form:
+````javascript
+{
+  value: string,
+  isValid: boolean,
+  hasValue: boolean
+}
+````
+* *value* : null or a string in the 'returnFormat' format. It may or may not be a valid time string.
+* *isValid* : true if the value is a valid time string.
+* *hasValue*: true if the value is not null.
+
+Note: the onChange handler will be called on each key press.
+
+#### placeHolder
+Place holder displayed in the input element.
+
+#### error
+Error message to display using Bootstrap validation classes. If this property is non-null and non-empty then TimePicker will add the ``.is-invalid`` class to the input element and also add an ``<invalid-feedback>`` tag. See <a href="https://getbootstrap.com/docs/4./components/forms/#validation">Bootstrap form validation</a> for more details.
+
+#### inputSize
+This adds a Bootstrap form-control size modifier to the input element:
+* *sm* : Small
+* *lg* : Large
+
+Omit this property for standard Bootstrap form-control size.
+
+### Mouse & Keyboard Interaction
+TimePicker will toggle the time picker popup when the user clicks on the input element or clock icon.
+
+The pop-up can also be toggled by pressing the ``Esc`` key.
+
+Tabbing (or back-tabbing) out of the input element will automatically close the pop-up.
