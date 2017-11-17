@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DatePicker from '../lib';
+import { DatePicker } from '../lib';
 
 class DatePickerDemo extends Component {
 

@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 
 import moment from 'moment';
 
-import Calendar from './Calendar';
+import TimeSelector from './TimeSelector';
 import './Picker.css';
 
-class DatePicker extends Component {
+class TimePicker extends Component {
 
   constructor(props) {
     super(props);
@@ -14,13 +14,20 @@ class DatePicker extends Component {
 
   getStateValuesFromProps = (props) => {
 
+    // 12 or 24
+    const pickerFormat = props.pickerFormat
+      ? props.pickerFormat
+      : '12';
+  
     const displayFormat = props.displayFormat
       ? props.displayFormat
-      : 'MM/DD/YYYY';
+      : pickerFormat === '12'
+      ? 'h:mm A'
+      : 'HH:mm';
 
     const returnFormat = props.returnFormat
       ? props.returnFormat
-      : 'YYYY-MM-DD';
+      : 'HH:mm';
     
     const value = props.value ? props.value : null;
     const mom = moment(value, returnFormat);
@@ -28,19 +35,22 @@ class DatePicker extends Component {
       ? mom.format(displayFormat)
       : value ? value : '';
 
-    return {displayFormat, returnFormat, value, displayValue, mom};
+    return {displayFormat, returnFormat, pickerFormat, value, displayValue, mom};
 
   }
 
   componentWillReceiveProps(nextProps) {
     const newState = this.getStateValuesFromProps(nextProps);
     const state = this.state;
-    if (newState.displayFormat !== state.displayFormat || newState.returnFormat !== state.returnFormat || newState.value !== state.value) {
+    if (newState.displayFormat !== state.displayFormat 
+      || newState.returnFormat !== state.returnFormat 
+      || newState.pickerFormat !== state.pickerFormat
+      || newState.value !== state.value) {
       this.setState(newState);
     }
   }
 
-  toggleCalendar = () => {
+  toggleLookup = () => {
     this.setState({
       isOpen: !this.state.isOpen
     })
@@ -48,7 +58,7 @@ class DatePicker extends Component {
 
   handleKeyDown = (event) => {
     if (event.keyCode === 27) { // 27 = Escape
-      this.toggleCalendar();
+      this.toggleLookup();
     } else if (event.keyCode === 9) { // 9 = Tab
       this.setState({isOpen: false})
     }
@@ -95,23 +105,21 @@ class DatePicker extends Component {
   }
 
   handleClick = () => {
-    this.toggleCalendar();
+    this.toggleLookup();
   }
 
   handleClickIcon = () => {
-    this.toggleCalendar();
+    this.toggleLookup();
   }
 
-  handleDateSelected = (date) => {
-    const mom = moment(date);
+  handleTimeSelected = (hh, mm) => {
+    const mom = moment({hours:hh, minutes:mm});
     const displayValue = mom.format(this.state.displayFormat);
     const value = mom.format(this.state.returnFormat);
-    const isOpen = false;
     this.setState({
       value,
       displayValue,
-      mom,
-      isOpen
+      mom
     }, this.sendOnChange);
   }
 
@@ -129,7 +137,7 @@ class DatePicker extends Component {
       ? ' is-invalid'
       : '');
 
-    const iconClasses = 'Icon fa fa-calendar-o text-muted' + (inputSize
+    const iconClasses = 'Icon fa fa-clock-o text-muted' + (inputSize
       ? ' ' + inputSize
       : '');
 
@@ -137,7 +145,10 @@ class DatePicker extends Component {
       ? this.props.placeholder
       : '';
 
-    const {displayValue, mom, isOpen} = this.state;
+    const {displayValue, mom, isOpen, pickerFormat} = this.state;
+
+    const hh = mom && mom.isValid() ? mom.hour() : 0;
+    const mm = mom && mom.isValid() ? mom.minute() : 0;
 
     return (
       <div className="Picker" onKeyDown={this.handleKeyDown}>
@@ -153,14 +164,16 @@ class DatePicker extends Component {
 
         <i
           className={iconClasses}
-          title="Show/Hide Calendar"
+          title="Show/Hide Time Entry"
           onClick={this.handleClick}/> 
           
-        {isOpen && <Calendar
-          selectedMoment={mom}
-          onDateSelected={this.handleDateSelected}
-          onDismiss={this.toggleCalendar}/>}
-
+        {isOpen && <TimeSelector
+          hh={hh}
+          mm={mm}
+          pickerFormat={pickerFormat}
+          onChange={this.handleTimeSelected}
+          onDismiss={this.toggleLookup}/>}
+        
         {hasError && <div className="invalid-feedback">{this.props.error}</div>}
 
       </div>
@@ -168,4 +181,4 @@ class DatePicker extends Component {
   }
 }
 
-export default DatePicker;
+export default TimePicker;

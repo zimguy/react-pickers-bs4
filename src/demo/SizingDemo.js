@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import moment from 'moment';
-import DatePicker from '../lib';
+import { DatePicker } from '../lib';
 
 class SizingDemo extends Component {
 

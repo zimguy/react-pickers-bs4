@@ -1,7 +1,8 @@
 import DatePicker from './components/DatePicker';
+import TimePicker from './components/TimePicker';
 
-export default DatePicker;
 export {
-  DatePicker
+  DatePicker,
+  TimePicker
 };
 
