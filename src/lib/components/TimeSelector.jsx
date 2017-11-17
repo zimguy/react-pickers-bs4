@@ -85,7 +85,6 @@ class TimeSelector extends Component {
   render() {
 
     const { hh, mm, pickerFormat } = this.props;
-    const ap = this.getAmPm();
 
     return (
       <div className="Overlay TimeSelector card p-2">
