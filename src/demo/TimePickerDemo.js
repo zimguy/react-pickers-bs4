@@ -45,6 +45,7 @@ class TimePickerDemo extends Component {
           <div className="form-group">
             <label>12 Hour Time</label>
             <TimePicker
+              id="myTimePicker"
               value={time1}
               onChange={this.handleTime1Change}
               placeholder="HH:MM AM/PM"

@@ -87,10 +87,10 @@ class TimeSelector extends Component {
 
   render() {
 
-    const { hh, mm, pickerFormat } = this.props;
+    const { hh, mm, pickerFormat, name, id } = this.props;
 
     return (
-      <div className="Overlay TimeSelector card p-2">
+      <div className="Overlay TimeSelector card p-2" name={name+'_selector'} id={id+'_selector'}>
         <div className="pb-2">
           <button type="button" className="btn btn-sm btn-link text-secondary pl-0" onClick={this.handleSelectNow}>Use current time</button>
           <button

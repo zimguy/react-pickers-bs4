@@ -39,6 +39,8 @@ A wrapper around a text input element that allows the user to type in a date and
 ### DatePicker Properties
 ````jsx
 <DatePicker
+  name="myDatePicker"
+  id="myDatePicker"
   displayFormat="MM/DD/YYYY"
   returnFormat="YYYY-MM-DD"
   value={date}
@@ -48,6 +50,19 @@ A wrapper around a text input element that allows the user to type in a date and
   inputSize="lg"
   />
 ````
+#### name
+Name assigned to the outer html div containing the DatePicker. Defaults to "DatePicker". The following sub-controls will be given the same name as the name of the main div with an appropriate suffix. For example:
+````html
+<div name="myDatePicker" id="myDatePicker" class="Picker">
+  <input type="text" name="myDatePicker_input" id="myDatePicker_input">
+  <i name="myDatePicker_icon" id="myDatePicker_icon"></i>
+  <div name="myDatePicker_calendar" id="myDatePicker_calendar">
+  ...
+  </div>
+</div>
+````
+#### id
+Id assigned to the outer html div containing the DatePicker. If not specified then id will be the same as name *name*.
 
 #### displayFormat
 Format of the date displayed to the user. Defaults to "MM/DD/YYYY".
@@ -100,7 +115,9 @@ A wrapper around a text input element that allows the user to type in a time and
 
 ### TimePicker Properties
 ````jsx
-<DatePicker
+<TimePicker
+  name="myTimePicker"
+  id="myTimePicker"
   pickerFormat="12"
   displayFormat="h:mm A"
   returnFormat="HH:mm"
@@ -111,6 +128,19 @@ A wrapper around a text input element that allows the user to type in a time and
   inputSize="lg"
   />
 ````
+#### name
+Name assigned to the outer html div containing the TimePicker. Defaults to "TimePicker". The following sub-controls will be given the same name as the name of the main div with an appropriate suffix. For example:
+````html
+<div name="myTimePicker" id="myTimePicker" class="Picker">
+  <input type="text" name="myTimePicker_input" id="myTimePicker_input">
+  <i name="myTimePicker_icon" id="myTimePicker_icon"></i>
+  <div name="myTimePicker_selector" id="myTimePicker_selector">
+  ...
+  </div>
+</div>
+````
+#### id
+Id assigned to the outer html div containing the DatePicker. If not specified then id will be the same as name *name*.
 #### pickerFormat
 One of ``"12"`` or ``"24"``. In 12-hour mode TimePicker will allow user to select AM or PM. Defaults to ``"12"``.
 

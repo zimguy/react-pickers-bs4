@@ -356,11 +356,12 @@ class Calendar extends Component {
 
   render() {
 
+    const {name, id} = this.props;
     const {selectedYMD, displayYM} = this.state;
     const todayText = moment().format('dddd, MMMM Do YYYY');
 
     return (
-      <div className="Overlay Calendar card p-2">
+      <div className="Overlay Calendar card p-2" name={name+'_calendar'} id={id+'_calendar'}>
         <table>
           <CalendarHead
             displayYM={displayYM}

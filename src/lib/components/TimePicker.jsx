@@ -125,6 +125,9 @@ class TimePicker extends Component {
 
   render() {
 
+    const name = this.props.name ? this.props.name : this.props.id ? this.props.id : 'timepicker';
+    const id = this.props.id ? this.props.id : name;
+
     const inputSize = this.props.inputSize
       ? this.props.inputSize
       : null;
@@ -151,10 +154,12 @@ class TimePicker extends Component {
     const mm = mom && mom.isValid() ? mom.minute() : 0;
 
     return (
-      <div className="Picker" onKeyDown={this.handleKeyDown}>
+      <div name={name} id={id} className="Picker" onKeyDown={this.handleKeyDown}>
 
         <input
           type="text"
+          name={name+'_input'}
+          id={id+'_input'}          
           className={inputClasses}
           placeholder={placeholder}
           onBlur={this.handleInputBlur}
@@ -163,11 +168,15 @@ class TimePicker extends Component {
           value={displayValue}/>
 
         <i
+          name={name+'_icon'}
+          id={id+'_icon'}        
           className={iconClasses}
           title="Show/Hide Time Entry"
           onClick={this.handleClick}/> 
           
         {isOpen && <TimeSelector
+          name={name}
+          id={id}        
           hh={hh}
           mm={mm}
           pickerFormat={pickerFormat}

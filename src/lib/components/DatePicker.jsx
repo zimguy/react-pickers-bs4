@@ -117,6 +117,9 @@ class DatePicker extends Component {
 
   render() {
 
+    const name = this.props.name ? this.props.name : this.props.id ? this.props.id : 'datepicker';
+    const id = this.props.id ? this.props.id : name;
+
     const inputSize = this.props.inputSize
       ? this.props.inputSize
       : null;
@@ -140,10 +143,12 @@ class DatePicker extends Component {
     const {displayValue, mom, isOpen} = this.state;
 
     return (
-      <div className="Picker" onKeyDown={this.handleKeyDown}>
+      <div name={name} id={id} className="Picker" onKeyDown={this.handleKeyDown}>
 
         <input
           type="text"
+          name={name+'_input'}
+          id={id+'_input'}
           className={inputClasses}
           placeholder={placeholder}
           onBlur={this.handleInputBlur}
@@ -152,11 +157,15 @@ class DatePicker extends Component {
           value={displayValue}/>
 
         <i
+          name={name+'_icon'}
+          id={id+'_icon'}
           className={iconClasses}
           title="Show/Hide Calendar"
           onClick={this.handleClick}/> 
           
         {isOpen && <Calendar
+          name={name}
+          id={id}
           selectedMoment={mom}
           onDateSelected={this.handleDateSelected}
           onDismiss={this.toggleCalendar}/>}

@@ -32,6 +32,7 @@ class DatePickerDemo extends Component {
           <div className="form-group">
             <label>Date</label>
             <DatePicker
+              id="myDatePicker"
               value={date}
               onChange={this.handleDateChange}
               placeholder="MM/DD/YYYY"
