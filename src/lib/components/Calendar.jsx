@@ -28,7 +28,7 @@ class CalendarMonthSelect extends Component {
       <select
         value={displayYM.month}
         onChange={this.handleChange}
-        className="btn btn-outline-dark border-standard"
+        className="btn btn-outline-secondary border-standard"
         style={{
         display: 'inline-block',
         width: 'auto'
@@ -83,7 +83,7 @@ class CalendarYearSelect extends Component {
       <select
         value={displayYM.year}
         onChange={this.handleChange}
-        className="btn btn-outline-dark border-standard"
+        className="btn btn-outline-secondary border-standard"
         style={{
         display: 'inline-block',
         width: 'auto'
@@ -143,7 +143,7 @@ class CalendarHead extends Component {
 
                 <button
                   type="button"
-                  className="btn btn-outline-dark border-standard"
+                  className="btn btn-outline-secondary border-standard"
                   onClick={this.handleClickPrev}
                   title="Previous month">
                   &lsaquo;
@@ -153,7 +153,7 @@ class CalendarHead extends Component {
 
                 <button
                   type="button"
-                  className="btn btn-outline-dark border-standard"
+                  className="btn btn-outline-secondary border-standard"
                   onClick={this.handleClickNext}
                   title="Next month">
                   &rsaquo;

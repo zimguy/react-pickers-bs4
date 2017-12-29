@@ -46,6 +46,15 @@ class DatePickerDemo extends Component {
             </pre>
           </div>
           }
+          <div className="form-group">
+            <label>Another Input</label>
+            <input
+              name="myOtherInput" 
+              title="Tab between DatePicker and other input fields to see what happens"
+              placeholder=""
+              className="form-control"
+              />
+          </div>
         </form>
       </div>
     );

@@ -10,7 +10,7 @@ const HourSelector = (props) => {
   const value = props.pickerFormat === '12' && props.value>12 ? props.value % 12 : props.value;
   return (
     <select
-      className="btn btn-outline-dark border-standard"
+      className="btn btn-outline-secondary border-standard"
       onChange={props.onChange}
       value={value}>
       {[...Array(arraySize).keys()].map(hour => (
@@ -23,7 +23,7 @@ const HourSelector = (props) => {
 const AmPmSelector = (props) => {
   return (
     <select
-      className="btn btn-outline-dark border-standard"
+      className="btn btn-outline-secondary border-standard"
       onChange={(event) => props.onChange(event.target.value)}
       value={props.value}>
       <option value='AM'>AM</option>
@@ -36,7 +36,7 @@ const MinuteSelector = (props) => {
 
   return (
     <select
-      className="btn btn-outline-dark border-standard"
+      className="btn btn-outline-secondary border-standard"
       onChange={props.onChange}
       value={props.value}>
       {[...Array(60).keys()].map(min => (
