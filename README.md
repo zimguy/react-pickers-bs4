@@ -1,4 +1,4 @@
-# React Pickers Using Bootstrap 4
+# React Pickers Using Bootstrap 4 v0.2.0
 
 A library of widgets for React and Bootstrap based web applications.
 
@@ -48,6 +48,8 @@ A wrapper around a text input element that allows the user to type in a date and
   placeholder="MM/DD/YYYY"
   error={dateError}
   inputSize="lg"
+  autoOpen
+  autoClose
   />
 ````
 #### name
@@ -100,6 +102,12 @@ This adds a Bootstrap form-control size modifier to the input element:
 * *lg* : Large
 
 Omit this property for standard Bootstrap form-control size.
+
+#### autoOpen
+Automatically open the Calendar when the DatePicker gets focus. Defaults to *true*.
+
+#### autoClose
+Automatically close the Calendar when the DatePicker loses focus. Defaults to *true*.
 
 ### Mouse & Keyboard Interaction
 DatePicker will toggle the popup calendar when the user clicks on the input element or calendar icon.
@@ -180,6 +188,13 @@ This adds a Bootstrap form-control size modifier to the input element:
 * *lg* : Large
 
 Omit this property for standard Bootstrap form-control size.
+
+#### autoOpen
+Automatically open the lookup when the TimePicker gets focus. Defaults to *true*.
+
+#### autoClose
+Automatically close the lookup when the TimePicker loses focus. Defaults to *true*.
+
 
 ### Mouse & Keyboard Interaction
 TimePicker will toggle the time picker popup when the user clicks on the input element or clock icon.
