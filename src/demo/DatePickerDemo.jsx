@@ -34,6 +34,8 @@ class DatePickerDemo extends Component {
             <DatePicker
               id="myDatePicker"
               value={date}
+              autoOpen
+              autoClose
               onChange={this.handleDateChange}
               placeholder="MM/DD/YYYY"
               error={dateError}/>

@@ -9,7 +9,15 @@ class TimePicker extends Component {
 
   constructor(props) {
     super(props);
-    this.state = Object.assign(this.getStateValuesFromProps(props), {isOpen: false});
+    this.state = Object.assign(
+      this.getStateValuesFromProps(props), 
+      {
+        isOpen: false
+      }
+    );
+    this._hasFocus = false;
+    this._isClicking = false
+    this._isMounted = false;
   }
 
   getStateValuesFromProps = (props) => {
@@ -50,17 +58,31 @@ class TimePicker extends Component {
     }
   }
 
+  isAutoOpen() {
+    return this.props.autoOpen || (typeof this.props.autoOpen === 'undefined');
+  }
+
+  isAutoClose() {
+    return this.props.autoClose || (typeof this.props.autoClose === 'undefined');
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   toggleLookup = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    })
+    this.setState({ isOpen: !this.state.isOpen })
   }
 
   handleKeyDown = (event) => {
     if (event.keyCode === 27) { // 27 = Escape
       this.toggleLookup();
-    } else if (event.keyCode === 9) { // 9 = Tab
-      this.setState({isOpen: false})
+    } else if (this.isAutoClose() && event.keyCode === 9 && this.state.isOpen) { // 9 = Tab
+      this.toggleLookup();
     }
   }
 
@@ -94,7 +116,31 @@ class TimePicker extends Component {
 
   }
 
+  closeOnBlur = () => {
+    if (this._isMounted) {
+      if (this.state.isOpen && !this._hasFocus) {
+        this.setState({ isOpen: false });
+      }
+    }
+  }
+
+  handleBlur = (event) => {
+    this._hasFocus = false;
+    if (this.isAutoClose()) {
+      setTimeout(this.closeOnBlur, 150);
+    }
+  }
+
+  handleFocus = (event) => {
+    this._hasFocus = true;
+    if (this._isClicking || (!this.state.isOpen && this.isAutoOpen())) {
+      this.toggleLookup();
+      this._isClicking = false;
+    }    
+  }
+
   handleInputBlur = () => {
+    this.setState({ hasFocus: false });
     const { mom, displayValue } = this.state;
     if (mom.isValid()) {
       const newDisplayValue = mom.format(this.state.displayFormat);
@@ -104,12 +150,9 @@ class TimePicker extends Component {
     };
   }
 
-  handleClick = () => {
-    this.toggleLookup();
-  }
-
   handleClickIcon = () => {
-    this.toggleLookup();
+    this._isClicking = true;
+    this.textInput.focus();
   }
 
   handleTimeSelected = (hh, mm) => {
@@ -121,6 +164,11 @@ class TimePicker extends Component {
       displayValue,
       mom
     }, this.sendOnChange);
+  }
+
+  handleLookupDismiss = () => {
+    this.textInput.focus();
+    this.toggleLookup();
   }
 
   render() {
@@ -154,7 +202,12 @@ class TimePicker extends Component {
     const mm = mom && mom.isValid() ? mom.minute() : 0;
 
     return (
-      <div name={name} id={id} className="Picker" onKeyDown={this.handleKeyDown}>
+      <div name={name} id={id} 
+        className="Picker" 
+        onKeyDown={this.handleKeyDown}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}        
+        >
 
         <input
           type="text"
@@ -164,15 +217,16 @@ class TimePicker extends Component {
           placeholder={placeholder}
           onBlur={this.handleInputBlur}
           onChange={this.handleChange}
-          onClick={this.handleClick}
-          value={displayValue}/>
+          value={displayValue}
+          ref={(input) => { this.textInput = input; }} 
+        />
 
         <i
           name={name+'_icon'}
           id={id+'_icon'}        
           className={iconClasses}
           title="Show/Hide Time Entry"
-          onClick={this.handleClick}/> 
+          onClick={this.handleClickIcon}/> 
           
         {isOpen && <TimeSelector
           name={name}
@@ -181,7 +235,7 @@ class TimePicker extends Component {
           mm={mm}
           pickerFormat={pickerFormat}
           onChange={this.handleTimeSelected}
-          onDismiss={this.toggleLookup}/>}
+          onDismiss={this.handleLookupDismiss}/>}
         
         {hasError && <div className="invalid-feedback">{this.props.error}</div>}
 

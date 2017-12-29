@@ -9,7 +9,16 @@ class DatePicker extends Component {
 
   constructor(props) {
     super(props);
-    this.state = Object.assign(this.getStateValuesFromProps(props), {isOpen: false});
+    this.activeElement = null;
+    this.state = Object.assign(
+      this.getStateValuesFromProps(props), 
+      {
+        isOpen: false
+      }
+    );
+    this._hasFocus = false;
+    this._isClicking = false
+    this._isMounted = false;
   }
 
   getStateValuesFromProps = (props) => {
@@ -40,17 +49,31 @@ class DatePicker extends Component {
     }
   }
 
+  isAutoOpen() {
+    return this.props.autoOpen || (typeof this.props.autoOpen === 'undefined');
+  }
+
+  isAutoClose() {
+    return this.props.autoClose || (typeof this.props.autoClose === 'undefined');
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   toggleCalendar = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    })
+    this.setState({ isOpen : !this.state.isOpen });
   }
 
   handleKeyDown = (event) => {
     if (event.keyCode === 27) { // 27 = Escape
       this.toggleCalendar();
-    } else if (event.keyCode === 9) { // 9 = Tab
-      this.setState({isOpen: false})
+    } else if (this.isAutoClose() && event.keyCode === 9 && this.state.isOpen) { // 9 = Tab
+      this.toggleCalendar();
     }
   }
 
@@ -84,35 +107,60 @@ class DatePicker extends Component {
 
   }
 
-  handleInputBlur = () => {
+  closeOnBlur = () => {
+    if (this._isMounted) {
+      if (this.state.isOpen && !this._hasFocus) {
+        this.setState({ isOpen: false });
+      }
+    }
+  }
+
+  handleBlur = (event) => {
+    this._hasFocus = false;
+    if (this.isAutoClose()) {
+      setTimeout(this.closeOnBlur, 150);
+    }
+  }
+
+  handleFocus = (event) => {
+    this._hasFocus = true;
+    if (this._isClicking || (!this.state.isOpen && this.isAutoOpen())) {
+      this.toggleCalendar();
+      this._isClicking = false;
+    }    
+  }
+
+  handleInputBlur = (event) => {
     const { mom, displayValue } = this.state;
     if (mom.isValid()) {
       const newDisplayValue = mom.format(this.state.displayFormat);
       if (newDisplayValue !== displayValue) {
         this.setState({displayValue: newDisplayValue});
       }
-    };
-  }
-
-  handleClick = () => {
-    this.toggleCalendar();
+    };  
   }
 
   handleClickIcon = () => {
-    this.toggleCalendar();
+    this._isClicking = true;
+    this.textInput.focus();
   }
 
   handleDateSelected = (date) => {
     const mom = moment(date);
     const displayValue = mom.format(this.state.displayFormat);
     const value = mom.format(this.state.returnFormat);
-    const isOpen = false;
     this.setState({
       value,
       displayValue,
-      mom,
-      isOpen
+      mom
     }, this.sendOnChange);
+    this.textInput.focus();
+    this.toggleCalendar();
+  }
+
+  handleCalendarDismiss = () => {
+    this.textInput.focus();
+    this.toggleCalendar();
   }
 
   render() {
@@ -143,7 +191,13 @@ class DatePicker extends Component {
     const {displayValue, mom, isOpen} = this.state;
 
     return (
-      <div name={name} id={id} className="Picker" onKeyDown={this.handleKeyDown}>
+      <div 
+        name={name} id={id} 
+        className="Picker" 
+        onKeyDown={this.handleKeyDown}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
+      >
 
         <input
           type="text"
@@ -153,22 +207,23 @@ class DatePicker extends Component {
           placeholder={placeholder}
           onBlur={this.handleInputBlur}
           onChange={this.handleChange}
-          onClick={this.handleClick}
-          value={displayValue}/>
+          value={displayValue}
+          ref={(input) => { this.textInput = input; }} 
+        />
 
         <i
           name={name+'_icon'}
           id={id+'_icon'}
           className={iconClasses}
           title="Show/Hide Calendar"
-          onClick={this.handleClick}/> 
+          onClick={this.handleClickIcon}/> 
           
         {isOpen && <Calendar
           name={name}
           id={id}
           selectedMoment={mom}
           onDateSelected={this.handleDateSelected}
-          onDismiss={this.toggleCalendar}/>}
+          onDismiss={this.handleCalendarDismiss}/>}
 
         {hasError && <div className="invalid-feedback">{this.props.error}</div>}
 
