@@ -1,0 +1,7 @@
+.TimeSelector .NumberLine {
+  display: block;  
+}
+
+.TimeSelector .NumberLine .Number {
+  width: 27px;
+}

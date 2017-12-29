@@ -49,7 +49,8 @@ class TimePickerDemo extends Component {
               value={time1}
               onChange={this.handleTime1Change}
               placeholder="HH:MM AM/PM"
-              error={time1Error}/>
+              error={time1Error}
+              />
           </div>
           {time1Result && 
           <div className="form-group">
@@ -66,7 +67,8 @@ class TimePickerDemo extends Component {
               value={time2}
               onChange={this.handleTime2Change}
               placeholder="HH:MM"
-              error={time2Error}/>
+              error={time2Error}
+              />
           </div>
           {time2Result && 
           <div className="form-group">
