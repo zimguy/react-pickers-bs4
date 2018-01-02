@@ -2,78 +2,132 @@ import React, {Component} from 'react';
 
 import './TimeSelector.css';
 
-const NumberLine = ({ min, max, value, onChange }) => {
-  
-  const nums = [];
-  for (let i=min; i<=max; i++) { nums.push(i); }
+const EventListenerMode = {capture: true};
 
-  const getClasses = (i) => {
-    const bclass = i === value ? 'btn-primary' : 'btn-outline-secondary';
-    return `btn btn-sm ${bclass} mr-1 p-0 Number`;
+const padZero = (num) => {
+  let s = '0' + num;
+  return s.substr(s.length - 2);
+}
+
+class Incrementor extends Component {
+  constructor(props) {
+    super(props);
+    this.mouseDownMode = 0;
+    this.isFirstTime = false;
+    this.interval = null;
   }
 
-  return (
-    <div className="NumberLine">
-      {nums.map(num => (
-        <button 
-          key={num} 
-          className={getClasses(num)}
-          onClick={(evt) => {evt.preventDefault(); onChange(num)}}
-        >{num}</button>
-      ))}
-    </div>
-  )
+  preventGlobalMouseEvents = () => {
+    document.body.style['pointer-events'] = 'none';
+  }
+  
+  restoreGlobalMouseEvents = () => {
+    document.body.style['pointer-events'] = 'auto';
+  }
+  
+  mouseupListener = (e) => {
+    console.log(this);
+    clearInterval(this.interval);
+    if (this.isFirstTime) {
+      // single click!
+      this.props.onChange(this.mouseDownMode);
+    }
+    this.mouseDownMode = 0;
+    console.log('stop capturing', this.mouseDownMode);
+    this.restoreGlobalMouseEvents ();
+    document.removeEventListener ('mouseup',   this.mouseupListener,   EventListenerMode);
+    e.stopPropagation ();
+  }
+  
+  captureMouseEvents (e) {
+    console.log('capturing', this.mouseDownMode);
+    this.isFirstTime = true;
+    const that = this;
+    this.interval = setInterval(() => {
+      that.props.onChange(this.mouseDownMode);
+      that.isFirstTime = false;
+    }, 120);
+    this.preventGlobalMouseEvents ();
+    document.addEventListener ('mouseup', this.mouseupListener,   EventListenerMode);
+  }
 
+  startInc = (e) => {
+    this.mouseDownMode = 1;
+    this.captureMouseEvents(e);
+  }
+
+  startDec = (e) => {
+    this.mouseDownMode = -1;
+    this.captureMouseEvents(e);
+  }
+
+  render() {
+    return (
+      <div className="Incrementor border-secondary">
+        <button name="inc" type="button" className="btn btn-sm btn-outline-secondary border-0" onMouseDown={this.startInc}>
+          <i className="fa fa-chevron-up"/>
+        </button>
+        <button type="button" className="btn btn-sm btn-outline-secondary border-0" onMouseDown={this.startDec}>
+          <i name="dec" className="fa fa-chevron-down"/>
+        </button>
+      </div>
+    )
+  }
 }
 
 const HourSelector = ({ pickerFormat, value, onChange }) => {
   
-  const val = pickerFormat === '12' && value>12 ? value % 12 : value;
+  const onIncDec = (amount) => {
+    let newValue = value + amount;
+    if (newValue < 0) newValue = 23;
+    if (newValue > 23) newValue = 0
+    onChange(newValue);
+  }
 
-  return (
-    <div className="HourSelector">
-      Hour
-      {pickerFormat === '12' &&
-      <div className="text-center">
-        <NumberLine min={0} max={9} value={val} onChange={onChange} />
-        <NumberLine min={10} max={12} value={val} onChange={onChange} />
+  const val = pickerFormat === '12' && value > 12 ? value % 12 : value;
+  const displayValue = pickerFormat === '24' ? padZero(value) : val;
+
+  return (    
+    <div className="Selector border border-secondary rounded">
+      <div className="Number text-secondary">
+        {displayValue}
       </div>
-      }
-      {pickerFormat === '24' &&
-      <div className="text-center">
-        <NumberLine min={0} max={9} value={val} onChange={onChange} />
-        <NumberLine min={10} max={19} value={val} onChange={onChange} />
-        <NumberLine min={20} max={23} value={val} onChange={onChange} />
-      </div>
-      }
+      <Incrementor onChange={onIncDec} />
     </div>
   )
 }
 
 const MinuteSelector = ({ value, onChange }) => {
+
+  const onIncDec = (amount) => {
+    let newValue = value + amount;
+    if (newValue > 59) {
+      newValue = 0;
+    } else if (newValue < 0) {
+      newValue = 59;
+    };
+    onChange(newValue);  
+  }
+
+  const displayValue = padZero(value);
+
   return (
-    <div className="MinuteSelector pt-2">
-      Minute
-      <div className="text-center">
-        <NumberLine min={0} max={9}   value={value} onChange={onChange} />
-        <NumberLine min={10} max={19} value={value} onChange={onChange} />
-        <NumberLine min={20} max={29} value={value} onChange={onChange} />
-        <NumberLine min={30} max={39} value={value} onChange={onChange} />
-        <NumberLine min={40} max={49} value={value} onChange={onChange} />
-        <NumberLine min={50} max={59} value={value} onChange={onChange} />
+    <div className="Selector border border-secondary rounded">
+      <div className="Number text-secondary">
+        {displayValue}
       </div>
+      <Incrementor onChange={onIncDec} />
     </div>
   )
 }
 
 const AmPmSelector = ({value, onChange }) => {
   const getClasses = (ap) => {
-    const bclass = ap === value ? 'btn-primary' : 'btn-outline-secondary';
-    return `btn btn-sm ${bclass} mr-1 p-0 Number`;
+    const bclass = ap === value ? 'btn-secondary' : 'btn-outline-secondary';
+    return `btn btn-sm ${bclass}`;
   }
   return (
-    <div className="AmPmSelector pt-2">
-      <div className="NumberLine">
+    <div className="AmPmSelector btn-group-vertical">
         <button 
           className={getClasses('AM')}
           onClick={(evt) => {evt.preventDefault(); onChange('AM')}}
@@ -82,7 +136,6 @@ const AmPmSelector = ({value, onChange }) => {
           className={getClasses('PM')}
           onClick={(evt) => {evt.preventDefault(); onChange('PM')}}
         >PM</button>
-      </div>
     </div>
   )
 }
@@ -94,11 +147,6 @@ class TimeSelector extends Component {
   }
 
   handleHourChange = (hh) => {
-    if (this.props.pickerFormat==='12') {
-      const ap = this.getAmPm();
-      if (ap === 'PM' && hh > 0)
-        hh += 12;
-    };      
     this.props.onChange(hh, this.props.mm);
   }
 
@@ -138,17 +186,12 @@ class TimeSelector extends Component {
             <span>&times;</span>
           </button>
         </div>
-        <div>
-          <div>
-            <HourSelector value={hh} onChange={this.handleHourChange} pickerFormat={pickerFormat}/>
-            <MinuteSelector value={mm} onChange={this.handleMinuteChange}/>
-            {pickerFormat ==='12' && 
-            <AmPmSelector value={this.getAmPm()} onChange={this.handleAmPmChange} onDismiss={this.props.onDismiss} />
-            }
-            <div className="float-right">
-              <button type="button" className="btn btn-link text-secondary" onClick={this.props.onDismiss}>Close</button>
-            </div>
-          </div>
+        <div className="SelectorBody">
+          <HourSelector value={hh} onChange={this.handleHourChange} pickerFormat={pickerFormat} />
+          <MinuteSelector value={mm} onChange={this.handleMinuteChange}/>
+          {pickerFormat ==='12' && 
+          <AmPmSelector value={this.getAmPm()} onChange={this.handleAmPmChange} onDismiss={this.props.onDismiss} />
+          }
         </div>
       </div>
     );

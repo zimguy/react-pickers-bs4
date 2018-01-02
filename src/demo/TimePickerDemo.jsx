@@ -50,6 +50,7 @@ class TimePickerDemo extends Component {
               onChange={this.handleTime1Change}
               placeholder="HH:MM AM/PM"
               error={time1Error}
+              autoClose={true}
               />
           </div>
           {time1Result && 

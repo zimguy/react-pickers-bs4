@@ -1,7 +1,35 @@
-.TimeSelector .NumberLine {
+/* .TimeSelector .NumberLine {
   display: block;  
 }
 
 .TimeSelector .NumberLine .Number {
   width: 27px;
+} */
+
+.TimeSelector .SelectorBody {
+  display: flex;
+  flex-direction: row;
+}
+
+.TimeSelector .Selector {
+  display: flex;
+  flex-direction: row;
+  margin-right: 3px;
+}
+
+.TimeSelector .Number {
+  font-size: 36px;
+  width: 50px;
+  text-align: center;
+}
+
+.TimeSelector .Selector .Incrementor {
+  display: flex;
+  flex-direction: column;
+  border-left-width: 1px;
+  border-left-style: solid;
+}
+
+.TimeSelector .Selector .Incrementor button {
+  border-radius: 0;
 }

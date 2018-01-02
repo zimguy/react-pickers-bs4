@@ -1,4 +1,4 @@
-# React Pickers Using Bootstrap 4 v0.2.2
+# React Pickers Using Bootstrap 4 v0.2.3
 
 A library of widgets for React and Bootstrap based web applications.
 
