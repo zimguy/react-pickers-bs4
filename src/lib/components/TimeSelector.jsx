@@ -26,21 +26,18 @@ class Incrementor extends Component {
   }
   
   mouseupListener = (e) => {
-    console.log(this);
     clearInterval(this.interval);
     if (this.isFirstTime) {
       // single click!
       this.props.onChange(this.mouseDownMode);
     }
     this.mouseDownMode = 0;
-    console.log('stop capturing', this.mouseDownMode);
     this.restoreGlobalMouseEvents ();
     document.removeEventListener ('mouseup',   this.mouseupListener,   EventListenerMode);
     e.stopPropagation ();
   }
   
   captureMouseEvents (e) {
-    console.log('capturing', this.mouseDownMode);
     this.isFirstTime = true;
     const that = this;
     this.interval = setInterval(() => {
@@ -64,10 +61,10 @@ class Incrementor extends Component {
   render() {
     return (
       <div className="Incrementor border-secondary">
-        <button name="inc" type="button" className="btn btn-sm btn-outline-secondary border-0" onMouseDown={this.startInc}>
+        <button name="inc" type="button" className="btn btn-sm btn-outline-secondary border-0 p-0 px-1" onMouseDown={this.startInc}>
           <i className="fa fa-chevron-up"/>
         </button>
-        <button type="button" className="btn btn-sm btn-outline-secondary border-0" onMouseDown={this.startDec}>
+        <button type="button" className="btn btn-sm btn-outline-secondary border-0 p-0 px-1" onMouseDown={this.startDec}>
           <i name="dec" className="fa fa-chevron-down"/>
         </button>
       </div>
@@ -124,7 +121,7 @@ const MinuteSelector = ({ value, onChange }) => {
 const AmPmSelector = ({value, onChange }) => {
   const getClasses = (ap) => {
     const bclass = ap === value ? 'btn-secondary' : 'btn-outline-secondary';
-    return `btn btn-sm ${bclass}`;
+    return `btn btn-sm ${bclass} p-0 px-1`;
   }
   return (
     <div className="AmPmSelector btn-group-vertical">
