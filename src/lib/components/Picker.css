@@ -1,3 +1,7 @@
+.Picker input::-ms-clear { 
+  display: none; 
+}
+
 .Picker {
   position: relative;
 }

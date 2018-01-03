@@ -28,10 +28,11 @@ class CalendarMonthSelect extends Component {
       <select
         value={displayYM.month}
         onChange={this.handleChange}
-        className="btn btn-outline-secondary border-standard"
+        className="form-control form-control-sm"
         style={{
-        display: 'inline-block',
-        width: 'auto'
+          display: 'inline-block',
+          width: 'auto',
+          borderRadius: 0
       }}>
         {[
           0,
@@ -83,10 +84,12 @@ class CalendarYearSelect extends Component {
       <select
         value={displayYM.year}
         onChange={this.handleChange}
-        className="btn btn-outline-secondary border-standard"
+        className="form-control form-control-sm"
         style={{
         display: 'inline-block',
-        width: 'auto'
+        width: 'auto',
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0
       }}>
         {years.map(year => this.renderOption(year, displayYM))}
       </select>
@@ -139,11 +142,15 @@ class CalendarHead extends Component {
               display: 'inline-flex'
             }}>
 
-              <div className="btn-group btn-group-sm">
+              <div className="">
 
                 <button
                   type="button"
-                  className="btn btn-outline-secondary border-standard"
+                  className="btn btn-sm"
+                  style={{
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0
+                  }}
                   onClick={this.handleClickPrev}
                   title="Previous month">
                   &lsaquo;
@@ -153,7 +160,10 @@ class CalendarHead extends Component {
 
                 <button
                   type="button"
-                  className="btn btn-outline-secondary border-standard"
+                  className="btn btn-sm"
+                  style={{
+                    borderRadius: 0,
+                  }}
                   onClick={this.handleClickNext}
                   title="Next month">
                   &rsaquo;
@@ -263,7 +273,7 @@ class CalendarBody extends Component {
   renderDay(day, idx) {
     let classes = 'btn btn-sm';
     if (day.isSelected) {
-      classes += ' btn-info';
+      classes += ' btn-secondary';
     } else {
       classes += ' btn-light';
       if (!day.isDisplayMonth) {
